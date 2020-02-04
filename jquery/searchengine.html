@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge"
+<meta name="viewpport" content="width=device-width, initial-scale=1">
+<title>JQuery</title>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="typeahead/typeahead.js"></script>
+
+
+<style></style>
+</head>
+
+<body>
+
+<div id="the-basics">
+  <input class="typeahead" type="text" placeholder="District of BD">
+</div>
+
+<script>
+
+var substringMatcher = function(strs) {
+  return function findMatches(q, cb) {
+    var matches, substringRegex;
+	//http://twitter.github.io/typeahead.js/
+    // an array that will be populated with substring matches
+    matches = [];
+
+    // regex used to determine if a string contains the substring `q`
+    substrRegex = new RegExp(q, 'i');
+
+    // iterate through the pool of strings and for any string that
+    // contains the substring `q`, add it to the `matches` array
+    $.each(strs, function(i, str) {
+      if (substrRegex.test(str)) {
+        matches.push(str);
+      }
+    });
+
+    cb(matches);
+  };
+};
+
+var districts = ['Dhaka', 'Khulna', 'Jessore', 'Narail', 'Magura',
+  'Faridpur', 'Comilla', 'Chadpur', 'Chittagong', 'Barisal', 'Rongpur',
+  'Dinajpur', 'Narshingdi', 'Natore', 'Noakhali', 'Sylhet', 'Moulabi Bazar', 'Pabna',
+  'Uttara', 'Mahakhali', 'Dhanmondi', 'Coxs Bazar'
+];
+
+$('#the-basics .typeahead').typeahead({
+  hint: true,
+  highlight: true,
+  minLength: 1
+},
+{
+  name: 'districts',
+  source: substringMatcher(districts)
+});
+
+</script>
+</body>
+</html>
